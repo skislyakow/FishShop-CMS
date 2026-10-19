@@ -32,10 +32,10 @@
 ## Последствия
 
 - `os.getenv` / `os.environ` встречаются только в `settings.py`; это проверяется одним `grep`.
-- `create_database_connection(host, port, password)` и `StrapiClient(base_url, token)` не знают
+- `create_database_connection(host, port, password)` и `create_session(token)` не знают
   про окружение.
-- Хэндлеры достают клиента из `context.bot_data`, экраны и вспомогательные функции получают его
-  аргументом.
+- Хэндлеры достают HTTP-сессию и `base_url` из `context.bot_data`, экраны и вспомогательные
+  функции получают их аргументами.
 - Пустой `STRAPI_API_TOKEN` теперь останавливает запуск с понятной ошибкой; раньше бот стартовал
   и показывал «Каталог недоступен» только на `/start`.
 - Smoke-тест кладёт `FakeRedis` и клиента в `bot_data` — подменять env не нужно.
