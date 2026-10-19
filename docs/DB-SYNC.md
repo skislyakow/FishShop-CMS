@@ -67,7 +67,7 @@ strapi import -f ../backups/strapi-export.tar.gz --force
 3. При необходимости запустить Strapi один раз, чтобы он применил новые content-types.
 4. Положить свежий архив в `backups/strapi-export.tar.gz`.
 5. `npm run db:import` (из корня репозитория)
-6. Перегенерировать API-токен и обновить `STRAPI_API_TOKEN` в `bot/.env`
+6. Перегенерировать API-токен и обновить `STRAPI_API_TOKEN` в `.env` бот-репозитория
    (почему — см. «API-токены» в подводных камнях).
 7. Запустить Strapi и проверить каталог в админке.
 
@@ -96,7 +96,8 @@ strapi import -f ../backups/strapi-export.tar.gz --force
   токена в БД посчитан от `API_TOKEN_SALT`, а соль у каждой машины своя. Поэтому архив
   привозит строки токенов «чужой» машины, и Strapi отвечает на них `401 Unauthorized`.
   После `db:import`: создай новый токен в Settings → API Tokens (тип **Read-only**, срок
-  **Unlimited**, показывается один раз) и обнови его в `bot/.env` (`STRAPI_API_TOKEN`).
+  **Unlimited**, показывается один раз) и обнови его в `.env` бот-репозитория
+  (`STRAPI_API_TOKEN`).
 - **Версии Strapi должны совпадать.** Держи `package-lock.json` в git и ставь зависимости
   детерминированно: `npm run setup` (или `npm ci` из `cms/`).
 - **Не работайте одновременно с данными на двух машинах.** Модель «одна БД — один писатель»:

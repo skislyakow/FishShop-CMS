@@ -19,22 +19,14 @@ Strapi 5 требует Node.js 20–26; версия 16 из урока уст�
 Опционально:
 
 - Для работы с Issues — GitHub CLI: `winget install GitHub.cli` (Windows) / `sudo apt install gh` (Ubuntu), затем `gh auth login`.
-- Для Telegram-бота — `uv`: `winget install --id astral-sh.uv` (Windows) / `curl -LsSf https://astral.sh/uv/install.sh | sh` (Ubuntu). Ставится один раз; `npm run setup` сам выполнит `uv sync` для `bot/`.
-- Для Telegram-бота — **Redis** (здесь живут состояния диалогов, см. ADR-0007). На Windows он запускается в WSL:
-  ```bash
-  wsl -e bash -c 'sudo apt install -y redis-server && sudo service redis-server start'
-  ```
-  Проверка: `wsl -e redis-cli ping` → `PONG`. WSL2 пробрасывает порт `6379` на Windows
-  автоматически, так что из кода бота Redis виден как `127.0.0.1:6379`.
-  Сервис включён автоматически (`systemctl is-enabled redis-server` → `enabled`), но WSL
-  выключается вместе с последним процессом — после перезагрузки машины Redis может потребоваться
-  запустить снова.
+- Для бота — отдельный репозиторий: там нужны `uv` и **Redis** (в нём живут состояния
+  диалогов, см. ADR-0007). Их установка описана в README бот-репозитория.
 
 ## 2. Клонирование
 
 ```bash
-git clone <URL-репозитория> FishShop
-cd FishShop
+git clone https://github.com/skislyakow/FishShop-CMS.git
+cd FishShop-CMS
 ```
 
 ## 3. Развёртывание окружения
@@ -49,10 +41,9 @@ npm run setup
 
 1. восстанавливает skills из `skills-lock.json` в `.agents/skills/` (в git их нет — это личный инструмент);
 2. ставит зависимости Strapi: `npm ci` в `cms/` (или `npm install`, если нет `package-lock.json`);
-3. создаёт `cms/.env` из `cms/.env.example`, если файла ещё нет;
-4. когда появится `bot/`, выполняет `uv sync --project bot` (иначе пропускает).
+3. создаёт `cms/.env` из `cms/.env.example`, если файла ещё нет.
 
-Флаги: `--no-skills`, `--no-cms`, `--no-bot`, `--help`. Передавай их скрипту **напрямую** —
+Флаги: `--no-skills`, `--no-cms`, `--help`. Передавай их скрипту **напрямую** —
 `node scripts/bootstrap.mjs --no-cms`: npm перехватывает собственные флаги вида `--no-*`.
 Готовый npm-скрипт без skills — `npm run setup:prod`.
 
@@ -121,9 +112,9 @@ npm run develop
 
 1. Settings → API Tokens → **Create new API Token**.
 2. Тип: `Read-only` (для каталога бота) или `Full access` (для заказов).
-3. Скопируй значение в `bot/.env` под ключом `STRAPI_API_TOKEN` (шаблон — `bot/.env.example`).
-   Туда же кладётся `TELEGRAM_TOKEN` от @BotFather. Strapi сам этот файл не читает — у Strapi
-   свои переменные в `cms/.env`.
+3. Скопируй значение в `.env` бот-репозитория под ключом `STRAPI_API_TOKEN` (шаблон —
+   `.env.example` в репозитории бота). Туда же кладётся `TELEGRAM_TOKEN` от @BotFather.
+   Strapi сам этот файл не читает — у Strapi свои переменные в `cms/.env`.
 
 Токены создаются на каждой машине заново и в git не попадают.
 
@@ -180,6 +171,5 @@ Strapi пишет прогресс в stderr, поэтому PowerShell може
 - [ ] создан локальный администратор
 - [ ] Strapi перезапускается после закрытия консоли, вход теми же логином и паролем
 - [ ] skills восстановлены из `skills-lock.json` (`.agents/skills/` не пуст)
-- [ ] Redis отвечает: `wsl -e redis-cli ping` → `PONG`
-- [ ] `bot/.env` заполнен (`STRAPI_API_TOKEN` и `TELEGRAM_TOKEN`)
-- [ ] `cd bot && uv run python main.py` запускает бота (в Telegram приходит каталог по `/start`)
+- [ ] бот-репозиторий настроен отдельно: Redis отвечает, `.env` заполнен
+      (`STRAPI_API_TOKEN` и `TELEGRAM_TOKEN`), бот запускается и присылает каталог по `/start`

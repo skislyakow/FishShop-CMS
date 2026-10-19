@@ -1,8 +1,8 @@
 {
-  "name": "fishshop",
+  "name": "fishshop-cms",
   "version": "0.1.0",
   "private": true,
-  "description": "FishShop: Strapi CMS + Telegram bot. Корневые скрипты развёртывания окружения (без зависимостей).",
+  "description": "FishShop CMS: Strapi backend and project documentation.",
   "scripts": {
     "setup": "node scripts/bootstrap.mjs",
     "setup:prod": "node scripts/bootstrap.mjs --no-skills",

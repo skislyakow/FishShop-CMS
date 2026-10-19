@@ -1,7 +1,8 @@
 # Как работать на двух машинах
 
-Проект ведётся на двух машинах. Код и схема ходят через **git-репозиторий**, данные Strapi —
-через **архивы** (`docs/DB-SYNC.md`). Ниже — правила, чтобы две машины не разошлись.
+Проект ведётся на двух машинах и состоит из двух репозиториев: **FishShop CMS** (этот) и
+**FishShop** (Telegram-бот). Код и схема ходят через git, данные Strapi — через архивы
+(`docs/DB-SYNC.md`). Ниже — правила, чтобы две машины не разошлись.
 
 ## Главное правило
 
@@ -16,8 +17,10 @@
 | `cms/src/`, `cms/config/`, `cms/package.json`, `cms/package-lock.json` | `cms/.env` |
 | `docs/`, `AGENTS.md`, `GLOSSARY.md`, `README.md` | `cms/.tmp/` (в т.ч. `data.db`) |
 | `skills-lock.json`, `scripts/`, корневой `package.json` | `.agents/skills/` (личный инструмент, ставится из lockfile) |
-| `cms/.env.example` | `cms/node_modules/`, `cms/.cache/`, `cms/build/` |
-| `bot/pyproject.toml`, `bot/uv.lock` (когда появится бот) | `backups/`, `bot/.venv/` |
+| `cms/.env.example` | `cms/node_modules/`, `cms/.cache/`, `cms/build/`, `backups/` |
+
+Код бота (`*.py`, `pyproject.toml`, `uv.lock`, `.env.example`) коммитится в отдельном
+репозитории — здесь его нет.
 
 ## Ветки и коммиты
 
@@ -35,7 +38,7 @@
 **Начало работы на машине:**
 
 ```bash
-git pull --rebase            # подтянуть чужие изменения
+git pull --rebase            # подтянуть чужие изменения (в обоих репозиториях)
 cd cms && npm ci             # если менялся package-lock.json
 npm run develop              # Strapi: применит новые content-types к своей SQLite
 ```
@@ -74,6 +77,7 @@ git push
 Обе машины должны держать одинаковые версии:
 
 - Node.js — из `.nvmrc`/`engines` (Node 20–26).
-- Зависимости — по закоммиченным lock-файлам: `cms/package-lock.json` (npm), `bot/uv.lock` (uv).
+- Зависимости — по закоммиченным lock-файлам: `cms/package-lock.json` (npm), `uv.lock` в
+  репозитории бота (uv).
 - Окружение целиком — одной командой: `npm run setup` (skills из `skills-lock.json` + `npm ci`
-  в `cms/`; для бота — `uv sync`). На сервере: `npm run setup:prod`.
+  в `cms/`). На сервере: `npm run setup:prod`. Бот разворачивается отдельно: `uv sync`.
