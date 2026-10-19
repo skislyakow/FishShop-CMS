@@ -39,17 +39,11 @@ npm run setup
 
 Скрипт `scripts/bootstrap.mjs` по шагам:
 
-1. восстанавливает skills из `skills-lock.json` в `.agents/skills/` (в git их нет — это личный инструмент);
-2. ставит зависимости Strapi: `npm ci` в `cms/` (или `npm install`, если нет `package-lock.json`);
-3. создаёт `cms/.env` из `cms/.env.example`, если файла ещё нет.
+1. ставит зависимости Strapi: `npm ci` в `cms/` (или `npm install`, если нет `package-lock.json`);
+2. создаёт `cms/.env` из `cms/.env.example`, если файла ещё нет.
 
-Флаги: `--no-skills`, `--no-cms`, `--help`. Передавай их скрипту **напрямую** —
-`node scripts/bootstrap.mjs --no-cms`: npm перехватывает собственные флаги вида `--no-*`.
-Готовый npm-скрипт без skills — `npm run setup:prod`.
-
-> **На сервере** dev-инструменты не нужны: `npm run setup:prod` (то же, но без skills).
-
-Обновить skills позже: `npx skills@latest update`.
+Флаг `--no-cms` пропускает установку зависимостей; справка — `node scripts/bootstrap.mjs --help`.
+Флаги передавай скрипту **напрямую** — npm перехватывает собственные флаги вида `--no-*`.
 
 ## 4. Секреты
 
@@ -170,6 +164,5 @@ Strapi пишет прогресс в stderr, поэтому PowerShell може
 - [ ] Strapi запускается, админка открывается
 - [ ] создан локальный администратор
 - [ ] Strapi перезапускается после закрытия консоли, вход теми же логином и паролем
-- [ ] skills восстановлены из `skills-lock.json` (`.agents/skills/` не пуст)
 - [ ] бот-репозиторий настроен отдельно: Redis отвечает, `.env` заполнен
       (`STRAPI_API_TOKEN` и `TELEGRAM_TOKEN`), бот запускается и присылает каталог по `/start`

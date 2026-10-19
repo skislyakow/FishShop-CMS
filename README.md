@@ -3,7 +3,6 @@
 <p align="center">
   <img alt="Strapi 5" src="https://img.shields.io/badge/Strapi%205-4945FF?style=for-the-badge&logo=strapi&logoColor=white">
   <img alt="Node.js 20+" src="https://img.shields.io/badge/Node.js%2020%2B-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white">
-  <img alt="SQLite" src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white">
   <img alt="npm" src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
   <a href="LICENSE"><img alt="License MIT" src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge"></a>
 </p>
@@ -21,14 +20,12 @@
 | Позиция корзины | `api::cart-item.cart-item` | ссылки на корзину и товар, количество в кг |
 | Покупатель | `api::customer.customer` | `telegram_user_id` (unique) и почту |
 
-Планы: `Order` и `OrderItem` — оформление заказа со снимком цены на момент покупки.
-
 ## Быстрый старт
 
 Нужны Node.js 20–26 и npm.
 
 ```bash
-npm run setup                  # npm ci в cms/ + skills для агентов
+npm run setup                  # npm ci в cms/
 cp cms/.env.example cms/.env   # заполнить секреты, см. docs/SETUP.md
 cd cms && npm run develop      # http://localhost:1337
 ```

@@ -29,6 +29,3 @@ backups/*
 *.tar
 *.tar.gz
 *.tar.gz.enc
-
-# --- Личные skills агента (восстанавливаются из skills-lock.json) ---
-.agents/skills/

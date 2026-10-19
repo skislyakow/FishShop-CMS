@@ -5,7 +5,6 @@
   "description": "FishShop CMS: Strapi backend and project documentation.",
   "scripts": {
     "setup": "node scripts/bootstrap.mjs",
-    "setup:prod": "node scripts/bootstrap.mjs --no-skills",
     "db:snapshot": "npm --prefix cms run db:export",
     "db:import": "npm --prefix cms run db:import"
   }

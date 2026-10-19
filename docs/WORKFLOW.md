@@ -15,9 +15,9 @@
 | Коммитим | Не коммитим |
 | --- | --- |
 | `cms/src/`, `cms/config/`, `cms/package.json`, `cms/package-lock.json` | `cms/.env` |
-| `docs/`, `AGENTS.md`, `GLOSSARY.md`, `README.md` | `cms/.tmp/` (в т.ч. `data.db`) |
-| `skills-lock.json`, `scripts/`, корневой `package.json` | `.agents/skills/` (личный инструмент, ставится из lockfile) |
-| `cms/.env.example` | `cms/node_modules/`, `cms/.cache/`, `cms/build/`, `backups/` |
+| `docs/`, `GLOSSARY.md`, `README.md` | `cms/.tmp/` (в т.ч. `data.db`) |
+| `scripts/`, корневой `package.json` | `cms/node_modules/`, `cms/.cache/`, `cms/build/`, `backups/` |
+| `cms/.env.example` |  |
 
 Код бота (`*.py`, `pyproject.toml`, `uv.lock`, `.env.example`) коммитится в отдельном
 репозитории — здесь его нет.
@@ -79,5 +79,5 @@ git push
 - Node.js — из `.nvmrc`/`engines` (Node 20–26).
 - Зависимости — по закоммиченным lock-файлам: `cms/package-lock.json` (npm), `uv.lock` в
   репозитории бота (uv).
-- Окружение целиком — одной командой: `npm run setup` (skills из `skills-lock.json` + `npm ci`
-  в `cms/`). На сервере: `npm run setup:prod`. Бот разворачивается отдельно: `uv sync`.
+- Окружение целиком — одной командой: `npm run setup` (`npm ci` в `cms/`). Бот разворачивается
+  отдельно: `uv sync`.
