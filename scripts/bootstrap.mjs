@@ -8,7 +8,7 @@
 //   node scripts/bootstrap.mjs --help
 //   node scripts/bootstrap.mjs --no-cms
 //
-// Подробности: docs/SETUP.md
+// Подробности: README.md
 
 import { spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync } from 'node:fs';
@@ -62,7 +62,7 @@ Options:
 function checkNodeVersion() {
   const major = Number(process.versions.node.split('.')[0]);
   if (major < 20 || major > 26) {
-    console.warn(`Node ${process.versions.node}: Strapi 5 требует Node 20–26 (см. docs/SETUP.md).`);
+    console.warn(`Node ${process.versions.node}: Strapi 5 требует Node 20–26 (см. README.md).`);
   }
 }
 
@@ -87,7 +87,7 @@ function runCms() {
   const envExample = join(CMS_DIR, '.env.example');
   if (!existsSync(env) && existsSync(envExample)) {
     copyFileSync(envExample, env);
-    console.log('  создан cms/.env из cms/.env.example — заполни секреты (docs/SETUP.md).');
+    console.log('  создан cms/.env из cms/.env.example — заполни секреты (README.md).');
   }
   const cmd = existsSync(join(CMS_DIR, 'package-lock.json')) ? 'npm ci' : 'npm install';
   return run(cmd, CMS_DIR);

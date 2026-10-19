@@ -24,8 +24,7 @@ cms/.strapi/
 cms/build/
 cms/dist/
 
-# --- Бэкапы данных Strapi (передаются вне git) ---
-backups/*
+# --- Локальные дампы данных ---
+backups/
 *.tar
 *.tar.gz
-*.tar.gz.enc

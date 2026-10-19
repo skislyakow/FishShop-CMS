@@ -4,8 +4,6 @@
   "private": true,
   "description": "FishShop CMS: Strapi backend and project documentation.",
   "scripts": {
-    "setup": "node scripts/bootstrap.mjs",
-    "db:snapshot": "npm --prefix cms run db:export",
-    "db:import": "npm --prefix cms run db:import"
+    "setup": "node scripts/bootstrap.mjs"
   }
 }

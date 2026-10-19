@@ -9,8 +9,6 @@
     "deploy": "strapi deploy",
     "dev": "strapi develop",
     "develop": "strapi develop",
-    "db:export": "strapi export --no-encrypt -f ../backups/strapi-export",
-    "db:import": "strapi import -f ../backups/strapi-export.tar.gz --force",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",

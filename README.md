@@ -20,41 +20,68 @@
 | Позиция корзины | `api::cart-item.cart-item` | ссылки на корзину и товар, количество в кг |
 | Покупатель | `api::customer.customer` | `telegram_user_id` (unique) и почту |
 
+## API
+
+- База: `http://localhost:1337/api`.
+- Авторизация: API-токен в заголовке `Authorization: Bearer <token>`.
+- `draftAndPublish` включён только у товаров: бот видит лишь опубликованные записи. У корзин,
+  позиций и покупателей он выключен — это рабочие данные, а не контент для редактора.
+- Токен создаётся в админке (**Settings → API Tokens**). Для чтения каталога достаточно типа
+  **Read-only**, для работы с корзиной и контактами нужен **Full access**.
+
 ## Быстрый старт
 
 Нужны Node.js 20–26 и npm.
 
 ```bash
 npm run setup                  # npm ci в cms/
-cp cms/.env.example cms/.env   # заполнить секреты, см. docs/SETUP.md
+cp cms/.env.example cms/.env   # заполнить секреты
 cd cms && npm run develop      # http://localhost:1337
 ```
 
-В админке создай локального администратора и API-токен (**Settings → API Tokens**, тип
-**Full access**, срок Unlimited) — его получает бот. Без токена бот сможет только читать каталог.
-
-## Данные и бэкапы
-
-Записи и медиа синхронизируются между машинами архивами `strapi export` / `strapi import`;
-`cms/.tmp/data.db` и `backups/` в git не попадают.
+`npm run setup` ставит зависимости и создаёт `cms/.env` из шаблона. Сгенерировать секреты для
+него можно одной командой:
 
 ```bash
-npm run db:snapshot   # backups/strapi-export.tar.gz
-npm run db:import     # заменить локальные данные архивом
+node -e "for (let i=0;i<4;i++) console.log(require('crypto').randomBytes(16).toString('base64'))"
 ```
 
-Подробности — [docs/DB-SYNC.md](docs/DB-SYNC.md).
+Полученные значения вставь в `cms/.env`: `APP_KEYS`, `API_TOKEN_SALT`, `ADMIN_JWT_SECRET`,
+`TRANSFER_TOKEN_SALT` (при желании — `JWT_SECRET`, `ENCRYPTION_KEY`).
+
+Открой <http://localhost:1337/admin> и создай локального администратора. Затем создай API-токен
+(**Settings → API Tokens**), тип **Full access**, срок Unlimited — его получает бот.
+
+### Режимы запуска
+
+Все команды Strapi выполняются из каталога `cms/`.
+
+| Команда | Что делает | Когда нужна |
+| --- | --- | --- |
+| `npm run develop` | dev-режим, пересобирает админку на лету | повседневная работа |
+| `npm run build` | собирает админку в `build/` | перед `npm run start` (prod) |
+| `npm run start` | prod-режим, без hot-reload | проверка прод-сборки |
+
+Strapi останавливается по **Ctrl+C** в том терминале, где он запущен. Данные при этом не
+теряются: админ-аккаунт и контент лежат в SQLite-файле `cms/.tmp/data.db`.
+
+## Частые проблемы
+
+**`EADDRINUSE: address already in use :::1337`** — порт занят другим процессом (обычно висит
+предыдущий Strapi). Найди и заверши его:
+
+```powershell
+netstat -ano | findstr :1337      # PID — в последнем столбце
+taskkill /PID <PID> /F
+```
+
+Либо запусти на другом порту: `PORT=1338 npm run develop` (переменная `PORT` в `cms/.env`).
+
+**`npm error Missing script: "develop"`** — команда запущена не из `cms/`. Скрипты
+`develop`/`build`/`start` живут в `cms/package.json`, поэтому сначала `cd cms`.
 
 ## Репозитории проекта
 
-- **FishShop CMS** (этот репозиторий) — Strapi, схема данных, API и проектная документация.
+- **FishShop CMS** (этот репозиторий) — Strapi, схема данных и API.
 - **[FishShop](https://github.com/skislyakow/FishShop)** — Telegram-бот на Python:
   каталог, карточки, корзина, сбор контакта покупателя.
-
-## Документация
-
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — компоненты, модель данных, работа с API
-- [docs/SETUP.md](docs/SETUP.md) — подготовка окружения по шагам
-- [docs/WORKFLOW.md](docs/WORKFLOW.md) — работа на двух машинах, ветки и коммиты
-- [docs/adr/](docs/adr/) — архитектурные решения
-- [GLOSSARY.md](GLOSSARY.md) — словарь предметной области
